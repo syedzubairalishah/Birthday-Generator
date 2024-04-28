@@ -11,7 +11,7 @@ const ageCalculate = () => {
   const currentDate = today.getDate();
 
   if (isFutureDate(birthDetails, currentYear, currentMonth, currentDate)) {
-    alert("PAIDA TOW HOJA PEHLAY BSDK");
+    alert("You are not born yet");
     displayResult("-", "-", "-");
     return;
   }
