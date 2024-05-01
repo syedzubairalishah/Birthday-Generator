@@ -11,7 +11,7 @@ const ageCalculate = () => {
   const currentDate = today.getDate();
 
   if (isFutureDate(birthDetails, currentYear, currentMonth, currentDate)) {
-    alert("You are not born yet");
+    alert("YOU ARE NOT BORN YET!"); // Mistake: This alert message might be inappropriate.
     displayResult("-", "-", "-");
     return;
   }
@@ -36,41 +36,26 @@ const isFutureDate = (birthDetails, currentYear, currentMonth, currentDate) => {
 
 const calculateAge = (birthDetails, currentYear, currentMonth, currentDate) => {
   let years = currentYear - birthDetails.year;
-  let months, days;
-  if (currentMonth < birthDetails.month) {
-    years--;
-    months = 12 - (birthDetails.month - currentMonth);
-  } else {
-    months = currentMonth - birthDetails.month;
-  }
-  if (currentDate < birthDetails.date) {
+  let months = currentMonth - birthDetails.month;
+  let days = currentDate - birthDetails.date;
+
+  if (days < 0) {
     months--;
-    const lastMonth = cuurentMonth === 1 ? 12 : currentMonth - 1;
+    const lastMonth = currentMonth === 1 ? 12 : currentMonth - 1;
     const daysInLastMonth = getDaysInMonth(lastMonth, currentYear);
-    days = daysInLastMonth(birthDetails.date - currentDate);
-  } else {
-    days = currentDate - birthDetails.date;
+    days = daysInLastMonth + days; // Mistake: Corrected calculation of days.
+  }
+  if (months < 0) {
+    years--;
+    months = months + 12;
   }
   return { years, months, days };
 };
 
 const getDaysInMonth = (month, year) => {
-  const isLeapYear = year % 4 === 0 && (year % 100 != 0 || year % 400 === 0);
-  const getDaysInMonth = [
-    31,
-    isLeapYear ? 29 : 28,
-    31,
-    30,
-    31,
-    30,
-    31,
-    31,
-    30,
-    31,
-    30,
-    31,
-  ];
-  return getDaysInMonth[month - 1];
+  const isLeapYear = year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
+  const daysInMonth = [31, isLeapYear ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  return daysInMonth[month - 1];
 };
 
 const displayResult = (bdate, bMonth, bYear) => {
@@ -79,5 +64,4 @@ const displayResult = (bdate, bMonth, bYear) => {
   document.getElementById("days").textContent = bdate;
 };
 
-document.getElementById("calculate-button");
-addEventListener("click", ageCalculate);
+document.getElementById("calculate-button").addEventListener("click", ageCalculate); // Mistake: Corrected the attachment of event listener.
